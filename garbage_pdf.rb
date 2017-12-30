@@ -5,16 +5,27 @@ require 'nokogiri'
 class GarbagePdf
   attr_accessor :pdf
 
-  PDF_FILE_NAME = "garbage.pdf"
+   BASE_URL = 'http://www.city.hiratsuka.kanagawa.jp'
+   PDF_FILE_NAME = "garbage.pdf"
 
   def initialize(date, area)
     pdf_url = GarbagePdf::get_pdf_url(date, area)
     @pdf = GarbagePdf::download_link(pdf_url)
     File.write(PDF_FILE_NAME, @pdf)
   end
-
+  
   def self.get_pdf_url(date, area)
-    return 'http://www.city.hiratsuka.kanagawa.jp/common/100023350.pdf'
+    keyowrd = (date.year - 1988).to_s + '年度日本語版'
+
+    keyword = area + 'pdf'
+    url = BASE_URL + '/kankyo/page-c_01196.html'
+    html = open(url) do |f| f.read end
+    page = Nokogiri::HTML.parse(html, nil, 'UTF-8')
+    pdf_url = BASE_URL
+    page.xpath("//a[contains(text(), '%s')]" % keyword).each do |a|
+       pdf_url = pdf_url +  a[:href]
+    end
+    return pdf_url
   end
 
   def self.download_link(pdfurl)
