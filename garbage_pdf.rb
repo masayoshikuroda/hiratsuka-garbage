@@ -17,13 +17,13 @@ class GarbagePdf
   def self.get_pdf_url(date, area)
     keyowrd = (date.year - 1988).to_s + '年度日本語版'
 
-    keyword = area + 'pdf'
-    url = BASE_URL + '/kankyo/page-c_01196.html'
+    keyword = area
+    url = BASE_URL + '/kankyo/page-c_01189.html'
+    pdf_url = BASE_URL
     html = open(url) do |f| f.read end
     page = Nokogiri::HTML.parse(html, nil, 'UTF-8')
-    pdf_url = BASE_URL
     page.xpath("//a[contains(text(), '%s')]" % keyword).each do |a|
-       pdf_url = pdf_url +  a[:href]
+       pdf_url =  BASE_URL + a[:href]
     end
     return pdf_url
   end

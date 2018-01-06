@@ -52,31 +52,31 @@ class GarbageCalendar
   end
 
   def getBurnableDaysOfWeek
-    return @lines[4].split(' ')[1].split('・').map{|s| s.to_wday}
+    return @lines[5].split(' ')[1].split('・').map{|s| s.to_wday}
   end
 
   def getBurnableStartDay
     m, d = getMonthDay(@lines[12])
-    return Date.new(getYear + 1, m, d)
+    return Date.new(getYear, m, d)
   end
 
   def getBurnableEndDay
-    m, d = getMonthDay(@lines[10])
-    return Date.new(getYear, m, d)
+    m, d = getMonthDay(@lines[11])
+    return Date.new(getYear - 1, m, d)
   end
 
   def getPETDaysOfWeek
-    return @lines[16].split(' ')[1].split('・').map{|s| s.to_wday}
+    return @lines[17].split(' ')[1].split('・').map{|s| s.to_wday}
   end
   
   def getPETStartDay
-    m, d = getMonthDay(@lines[22])
-    return Date.new(getYear + 1, m, d)
+    m, d = getMonthDay(@lines[23].sub(/プラクル/, ' '))
+    return Date.new(getYear, m, d)
   end
 
   def getPETEndDay
-    m, d = getMonthDay(@lines[21])
-    return Date.new(getYear, m, d)
+    m, d = getMonthDay(@lines[18])
+    return Date.new(getYear - 1, m, d)
   end
 
   def getMonthDay(line)
@@ -84,8 +84,8 @@ class GarbageCalendar
   end
 
   def getNonBurnableDates
-    days1 = (@lines[30].split('収集')[0].strip + ' ' + @lines[31].strip).split(' ').map{|s| s.to_hankaku.to_i}
-    days2 = @lines[33].split(' ').slice(-12, 12).map{|s| s.to_hankaku.to_i}
+    days1 = @lines[32].split(' ').slice(-12, 12).map{|s| s.to_hankaku.to_i}
+    days2 = @lines[35].split(' ').slice(-12, 12).map{|s| s.to_hankaku.to_i}
     dates = Array.new
     dates.concat(to_dates(days1))
     dates.concat(to_dates(days2))
@@ -93,8 +93,8 @@ class GarbageCalendar
   end
 
   def getReuseDates
-    days1 = @lines[42].split(' ').map{|s| s.to_hankaku.to_i}
-    days2 = @lines[45].split(' ').slice(-12,12).map{|s| s.to_hankaku.to_i}
+    days1 = @lines[44].split(' ').slice(-12, 12).map{|s| s.to_hankaku.to_i}
+    days2 = @lines[47].split(' ').slice(-12, 12).map{|s| s.to_hankaku.to_i}
     dates = Array.new
     dates.concat(to_dates(days1))
     dates.concat(to_dates(days2))
@@ -103,9 +103,9 @@ class GarbageCalendar
 
   def to_dates(days)
     dates = Array.new
-    year = getYear
+    year = getYear - 1
     days.each_with_index do |day, i|
-      y = year
+      y = year 
       m = i + 4
       if m > 12 then
         m = i + 4 - 12
@@ -118,8 +118,8 @@ class GarbageCalendar
   end
 
   def isRange(date)
-    startDate = Date.new(@year,     4, 1)
-    endDate   = Date.new(@year + 1, 3, 31)
+    startDate = Date.new(@year - 1,     4, 1)
+    endDate   = Date.new(@year, 3, 31)
     return isInRange(date, startDate, endDate)
   end
 
@@ -152,3 +152,16 @@ class GarbageCalendar
   end
 end
 
+=begin
+cal = GarbageCalendar.new("garbage.pdf")
+p cal.district
+p cal.year
+p cal.burnableDaysOfWeek
+p cal.burnableStartDate
+p cal.burnableEndDate
+p cal.petDaysOfWeek
+p cal.petStartDate
+p cal.petEndDate
+p cal.noBurnableDates
+p cal.reusableDates
+=end
