@@ -11,11 +11,17 @@ class String
   end
 end
 
+class Date
+  def to_datestr
+    self.strftime("%Y-%m-%d")
+  end
+end
+
 class GarbageCalendar
   attr_reader :district, :year
   attr_reader :burnableDaysOfWeek, :burnableStartDate, :burnableEndDate
   attr_reader :petDaysOfWeek, :petStartDate, :petEndDate
-  attr_reader :noBurnableDates
+  attr_reader :nonBurnableDates
   attr_reader :reusableDates
 
   def initialize(pdf_name)
@@ -52,7 +58,7 @@ class GarbageCalendar
   end
 
   def getBurnableDaysOfWeek
-    return @lines[5].split(' ')[1].split('・').map{|s| s.to_wday}
+    return @lines[5].split(' ')[0].split('・').map{|s| s.to_wday}
   end
 
   def getBurnableStartDay
@@ -157,11 +163,11 @@ cal = GarbageCalendar.new("garbage.pdf")
 p cal.district
 p cal.year
 p cal.burnableDaysOfWeek
-p cal.burnableStartDate
-p cal.burnableEndDate
+p cal.burnableStartDate.to_datestr
+p cal.burnableEndDate.to_datestr
 p cal.petDaysOfWeek
-p cal.petStartDate
-p cal.petEndDate
-p cal.noBurnableDates
-p cal.reusableDates
+p cal.petStartDate.to_datestr
+p cal.petEndDate.to_datestr
+p cal.nonBurnableDates.map{|d| d.strftime("%m/%d")}
+p cal.reusableDates.map{|d| d.strftime("%m/%d")}
 =end
