@@ -11,7 +11,7 @@
 
 ## Usage
 ```
-$ ruby garbase.rb 0 明石町
+$ ruby garbage.rb 0 明石町
 {
   "district":"崇善南、中央地区",
   "date":    "2017年12月25日",

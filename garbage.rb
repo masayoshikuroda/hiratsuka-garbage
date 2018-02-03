@@ -1,6 +1,11 @@
 require_relative 'garbage_pdf.rb'
 require_relative 'garbage_cal.rb'
 
+if ARGV.size < 2 then
+  puts "Usage: ruby #{$0} date_diff area"
+  exit
+end
+
 date = Date.today + ARGV[0].to_i
 area = ARGV[1]
 
