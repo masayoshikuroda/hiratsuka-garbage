@@ -5,7 +5,7 @@
 ## Required library
 
 - ruby
-  - mechanize
+  - pdftotext
   - nokogiri
 
 
