@@ -5,8 +5,8 @@
 ## Required library
 
 - ruby
--- mechanize
--- nokogiri
+  - mechanize
+  - nokogiri
 
 
 ## Usage
